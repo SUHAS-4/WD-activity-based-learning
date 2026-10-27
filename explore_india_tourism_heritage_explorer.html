@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXPLORE INDIA — Tourism & Heritage Explorer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#FFF8F0',
+                            100: '#FFEEDD',
+                            500: '#FF9500',
+                            600: '#FF7A00',
+                            700: '#E05D00',
+                            darkBg: '#171717',
+                            darkCard: '#222222',
+                            lightBg: '#FFF8F0',
+                            border: '#F0DFCE'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbars & Glassmorphic Utilities */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #171717; }
+        ::-webkit-scrollbar-thumb { background: #FF7A00; border-radius: 4px; }
+        .glass-nav {
+            background: rgba(23, 23, 23, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .light .glass-nav {
+            background: rgba(255, 248, 240, 0.9);
+            backdrop-filter: blur(12px);
+        }
+        .orange-gradient {
+            background: linear-gradient(135deg, #FF9500 0%, #FF7A00 100%);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #FF9500 0%, #FF7A00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-overlay {
+            background: linear-gradient(180deg, rgba(23,23,23,0.4) 0%, rgba(23,23,23,0.85) 100%);
+        }
+    </style>
+</head>
+<body class="bg-brand-darkBg text-neutral-100 font-sans transition-colors duration-300 dark:bg-brand-darkBg dark:text-neutral-100 light:bg-brand-lightBg light:text-neutral-800" id="bodyEl">
+
+    <!-- TOP ANNOUNCEMENT BANNER -->
+    <div class="bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 text-white text-xs md:text-sm py-1.5 px-4 text-center font-medium relative z-50 flex items-center justify-center gap-2">
+        <i class="fa-solid fa-plane-departure"></i>
+        <span>Experience India's Grand Heritage Season 2026-2027 — Plan Your Journey Now!</span>
+    </div>
+
+    <!-- STICKY NAVBAR -->
+    <header class="sticky top-0 z-40 transition-all duration-300 glass-nav border-b border-white/10" id="mainHeader">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#home" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl orange-gradient flex items-center justify-center shadow-lg shadow-orange-500/30 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-location-dot text-white text-xl"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-serif font-bold text-2xl tracking-tight text-white dark:text-white light:text-neutral-900">EXPLORE <span class="text-orange-500">INDIA</span></span>
+                    <span class="text-[10px] tracking-widest text-orange-400 font-semibold uppercase -mt-1">Heritage & Tourism Portal</span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden lg:flex items-center space-x-6 text-sm font-medium">
+                <a href="#home" class="hover:text-orange-500 transition-colors">Home</a>
+                <a href="#destinations" class="hover:text-orange-500 transition-colors">Destinations</a>
+                <a href="#heritage" class="hover:text-orange-500 transition-colors">Heritage</a>
+                <a href="#festivals" class="hover:text-orange-500 transition-colors">Festivals</a>
+                <a href="#food" class="hover:text-orange-500 transition-colors">Food & Culture</a>
+                <a href="#gallery" class="hover:text-orange-500 transition-colors">Gallery</a>
+                <a href="#travel-guide" class="hover:text-orange-500 transition-colors">Travel Planner</a>
+                <a href="#contact" class="hover:text-orange-500 transition-colors">Contact</a>
+            </nav>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-3">
+                <!-- Search Toggle -->
+                <button onclick="toggleSearchModal()" aria-label="Search" class="p-2.5 rounded-full hover:bg-white/10 transition-colors text-lg" title="Search Destinations">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+
+                <!-- Favorites Tray Toggle -->
+                <button onclick="toggleFavoritesModal()" aria-label="Favorites" class="p-2.5 rounded-full hover:bg-white/10 transition-colors text-lg relative" title="Saved Favorites">
+                    <i class="fa-solid fa-heart text-orange-500"></i>
+                    <span id="favCountBadge" class="absolute -top-1 -right-1 bg-orange-600 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-brand-darkBg">0</span>
+                </button>
+
+                <!-- Theme Toggle Button -->
+                <button onclick="toggleTheme()" aria-label="Toggle Theme" class="p-2.5 rounded-full hover:bg-white/10 transition-colors text-lg" title="Toggle Light/Dark Theme">
+                    <i id="themeIcon" class="fa-solid fa-sun text-amber-400"></i>
+                </button>
+
+                <!-- CTA Button -->
+                <a href="#destinations" class="hidden sm:inline-flex items-center gap-2 orange-gradient px-5 py-2.5 rounded-full font-semibold text-sm text-white shadow-lg shadow-orange-500/20 hover:opacity-95 transition-all transform hover:-translate-y-0.5">
+                    <span>Explore Now</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" aria-label="Toggle Navigation Menu" class="lg:hidden p-2 rounded-lg hover:bg-white/10 text-2xl">
+                    <i class="fa-solid fa-bars" id="mobileMenuIcon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobileMenu" class="hidden lg:hidden border-t border-white/10 bg-neutral-900/95 px-6 py-6 space-y-4">
+            <a href="#home" onclick="toggleMobileMenu()" class="block text-lg font-medium hover:text-orange-500">Home</a>
+            <a href="#destinations" onclick="toggleMobileMenu()" class="block text-lg font-medium hover:text-orange-500">Destinations</a>
+            <a href="#heritage" onclick="toggleMobileMenu()" class="block text-lg font-medium hover:text-orange-500">Heritage</a>
+            <a href="#festivals" onclick="toggleMobileMenu()" class="block text-lg font-medium hover:text-orange-500">Festivals</a>
+            <a href="#food" onclick="toggleMobileMenu()" class="block text-lg font-medium hover:text-orange-500">Food & Culture</a>
+            <a href="#gallery" onclick="toggleMobileMenu()" class="block text-lg font-medium hover:text-orange-500">Gallery</a>
+            <a href="#travel-guide" onclick="toggleMobileMenu()" class="block text-lg font-medium hover:text-orange-500">Travel Planner</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block text-lg font-medium hover:text-orange-500">Contact</a>
+            <a href="#destinations" onclick="toggleMobileMenu()" class="block text-center orange-gradient text-white py-3 rounded-xl font-bold">Explore Now</a>
+        </div>
+    </header>
+
+    <!-- SEARCH MODAL -->
+    <div id="searchModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-start justify-center pt-20 px-4 backdrop-blur-md">
+        <div class="bg-neutral-900 border border-neutral-700 w-full max-w-2xl rounded-2xl p-6 shadow-2xl relative">
+            <button onclick="toggleSearchModal()" aria-label="Close Search" class="absolute top-4 right-4 text-neutral-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-xl font-bold font-serif mb-4 text-orange-500 flex items-center gap-2">
+                <i class="fa-solid fa-magnifying-glass"></i> Search Tourism Portal
+            </h3>
+            <div class="relative">
+                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search monuments, cities, foods, festivals (e.g. Taj Mahal, Dosa, Kerala)..." 
+                       class="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-5 py-3.5 pl-12 text-white focus:outline-none focus:border-orange-500 text-lg">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-neutral-500 text-lg"></i>
+            </div>
+            <!-- Search Results Container -->
+            <div id="searchResults" class="mt-6 max-h-96 overflow-y-auto space-y-3">
+                <p class="text-neutral-400 text-sm text-center py-6">Type to start exploring destinations across India...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAVORITES MODAL -->
+    <div id="favoritesModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-md">
+        <div class="bg-neutral-900 border border-neutral-700 w-full max-w-3xl rounded-2xl p-6 shadow-2xl relative max-h-[85vh] flex flex-col">
+            <div class="flex items-center justify-between border-b border-neutral-800 pb-4 mb-4">
+                <h3 class="text-2xl font-bold font-serif text-orange-500 flex items-center gap-2">
+                    <i class="fa-solid fa-heart text-red-500"></i> Saved Destinations & Heritage Sites
+                </h3>
+                <div class="flex items-center gap-3">
+                    <button onclick="clearAllFavorites()" class="text-xs bg-red-900/40 text-red-400 hover:bg-red-900/80 px-3 py-1.5 rounded-lg border border-red-800 transition-colors">Clear All</button>
+                    <button onclick="toggleFavoritesModal()" aria-label="Close Favorites" class="text-neutral-400 hover:text-white text-2xl"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+            <div id="favoritesList" class="flex-1 overflow-y-auto space-y-3 pr-2">
+                <!-- Dynamically Populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="relative min-h-[92vh] flex items-center justify-center overflow-hidden">
+        <!-- Background Hero Slider Image -->
+        <img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1920&q=80" 
+             alt="Taj Mahal Agra" 
+             class="absolute inset-0 w-full h-full object-cover object-center scale-105 transform animate-pulse transition-all duration-1000">
+        
+        <div class="absolute inset-0 hero-overlay"></div>
+
+        <div class="relative max-w-5xl mx-auto px-4 text-center z-10 py-16">
+            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/20 border border-orange-500/40 text-orange-400 text-xs sm:text-sm font-semibold tracking-wide uppercase mb-6 backdrop-blur-md">
+                <i class="fa-solid fa-crown text-amber-400"></i> Welcome to Incredible India
+            </span>
+
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white mb-6 leading-tight">
+                Discover India's <span class="text-gradient italic">Timeless Beauty</span>
+            </h1>
+
+            <p class="text-base sm:text-xl text-neutral-300 max-w-3xl mx-auto mb-10 font-light leading-relaxed">
+                Explore ancient architectural wonders, vibrant cultural festivals, breathtaking landscapes, and unforgettable royal culinary journeys across India's land of diversity.
+            </p>
+
+            <!-- Action Buttons Group -->
+            <div class="flex flex-wrap items-center justify-center gap-4 mb-14">
+                <a href="#destinations" class="orange-gradient text-white px-8 py-4 rounded-full font-semibold text-base shadow-xl shadow-orange-600/30 hover:scale-105 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-compass"></i> Explore Destinations
+                </a>
+                <a href="#heritage" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-md px-8 py-4 rounded-full font-semibold text-base transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-landmark"></i> Discover Heritage
+                </a>
+                <a href="#travel-guide" class="bg-neutral-900/80 hover:bg-neutral-800 text-orange-400 border border-orange-500/40 px-8 py-4 rounded-full font-semibold text-base transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-route"></i> Plan Your Journey
+                </a>
+            </div>
+
+            <!-- Quick Floating Search Input -->
+            <div class="max-w-xl mx-auto bg-neutral-900/90 p-2.5 rounded-full border border-orange-500/30 shadow-2xl flex items-center gap-2 backdrop-blur-md">
+                <i class="fa-solid fa-location-dot text-orange-500 text-xl ml-4"></i>
+                <input type="text" id="heroSearchInput" placeholder="Where do you want to go? (e.g., Jaipur, Hampi)" 
+                       class="w-full bg-transparent border-none text-white focus:outline-none text-sm sm:text-base px-2">
+                <button onclick="handleHeroSearch()" class="orange-gradient text-white px-6 py-3 rounded-full font-medium text-sm hover:opacity-95 transition-opacity shrink-0">
+                    Search
+                </button>
+            </div>
+
+            <!-- Portal Statistics Counter -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mt-16 pt-8 border-t border-white/10">
+                <div>
+                    <div class="text-3xl sm:text-4xl font-bold font-serif text-orange-500">40+</div>
+                    <div class="text-xs sm:text-sm text-neutral-400 font-medium">UNESCO Heritage Sites</div>
+                </div>
+                <div>
+                    <div class="text-3xl sm:text-4xl font-bold font-serif text-orange-500">28</div>
+                    <div class="text-xs sm:text-sm text-neutral-400 font-medium">States & Unique Regions</div>
+                </div>
+                <div>
+                    <div class="text-3xl sm:text-4xl font-bold font-serif text-orange-500">100+</div>
+                    <div class="text-xs sm:text-sm text-neutral-400 font-medium">Cultural Festivals</div>
+                </div>
+                <div>
+                    <div class="text-3xl sm:text-4xl font-bold font-serif text-orange-500">10,000+</div>
+                    <div class="text-xs sm:text-sm text-neutral-400 font-medium">Years of Civilization</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <a href="#about" class="absolute bottom-4 left-1/2 -translate-x-1/2 text-orange-500 text-2xl animate-bounce">
+            <i class="fa-solid fa-angles-down"></i>
+        </a>
+    </section>
+
+    <!-- ABOUT INDIA SECTION -->
+    <section id="about" class="py-20 bg-neutral-900 border-t border-neutral-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Text Column -->
+                <div>
+                    <span class="text-orange-500 text-sm font-bold tracking-widest uppercase mb-2 block">Land of Unity in Diversity</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-6 leading-tight">
+                        A Tapestry of History, Faith, and Magnificent Culture
+                    </h2>
+                    <p class="text-neutral-300 text-base sm:text-lg mb-6 leading-relaxed">
+                        India is a land where ancient wisdom seamlessly meets modern innovation. From the snow-capped Himalayan peaks in the north to the sun-kissed emerald backwaters of Kerala in the south, India offers an unparalleled tapestry of landscapes, cuisines, music, and royal architectural marvels.
+                    </p>
+                    <p class="text-neutral-400 text-sm sm:text-base mb-8 leading-relaxed">
+                        With over 22 official languages, thousands of culinary delicacies, and monuments spanning millennia, every corner of India tells a story waiting to be experienced firsthand by travelers worldwide.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#heritage" class="orange-gradient text-white px-6 py-3 rounded-full font-semibold text-sm shadow-lg shadow-orange-500/20 hover:scale-105 transition-all inline-flex items-center gap-2">
+                            <span>Explore Our Heritage</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Visual Gallery Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=600&q=80" alt="Taj Mahal" class="rounded-2xl h-64 w-full object-cover shadow-lg transform hover:scale-105 transition-transform duration-300">
+                    <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=600&q=80" alt="Kerala Backwaters" class="rounded-2xl h-64 w-full object-cover shadow-lg transform hover:scale-105 transition-transform duration-300 mt-8">
+                    <img src="https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=600&q=80" alt="Jaipur Palace" class="rounded-2xl h-64 w-full object-cover shadow-lg transform hover:scale-105 transition-transform duration-300 -mt-8">
+                    <img src="https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=600&q=80" alt="Indian Temple" class="rounded-2xl h-64 w-full object-cover shadow-lg transform hover:scale-105 transition-transform duration-300">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DESTINATIONS SECTION -->
+    <section id="destinations" class="py-20 bg-neutral-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-orange-500 text-sm font-bold tracking-widest uppercase block mb-2">Iconic Places</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-4">Popular Tourist Destinations</h2>
+                <p class="text-neutral-400">Filter through regional wonders, historic cities, tranquil hill stations, and coastal paradises across India.</p>
+            </div>
+
+            <!-- Region Filter Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10" id="regionFilters">
+                <button onclick="filterDestinations('All')" class="region-btn active px-5 py-2.5 rounded-full text-sm font-semibold transition-all bg-orange-600 text-white">All Regions</button>
+                <button onclick="filterDestinations('North')" class="region-btn px-5 py-2.5 rounded-full text-sm font-semibold transition-all bg-neutral-800 hover:bg-neutral-700 text-neutral-300">North</button>
+                <button onclick="filterDestinations('South')" class="region-btn px-5 py-2.5 rounded-full text-sm font-semibold transition-all bg-neutral-800 hover:bg-neutral-700 text-neutral-300">South</button>
+                <button onclick="filterDestinations('East')" class="region-btn px-5 py-2.5 rounded-full text-sm font-semibold transition-all bg-neutral-800 hover:bg-neutral-700 text-neutral-300">East</button>
+                <button onclick="filterDestinations('West')" class="region-btn px-5 py-2.5 rounded-full text-sm font-semibold transition-all bg-neutral-800 hover:bg-neutral-700 text-neutral-300">West</button>
+                <button onclick="filterDestinations('Central')" class="region-btn px-5 py-2.5 rounded-full text-sm font-semibold transition-all bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Central</button>
+                <button onclick="filterDestinations('Northeast')" class="region-btn px-5 py-2.5 rounded-full text-sm font-semibold transition-all bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Northeast</button>
+            </div>
+
+            <!-- Dynamic Destinations Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="destinationsGrid">
+                <!-- Javascript dynamic insertion -->
+            </div>
+
+            <!-- Load More CTA -->
+            <div class="text-center mt-12">
+                <button id="loadMoreBtn" onclick="loadMoreDestinations()" class="bg-neutral-800 hover:bg-neutral-700 text-orange-400 border border-orange-500/30 px-8 py-3.5 rounded-full font-semibold text-sm transition-all shadow-md">
+                    <i class="fa-solid fa-spinner text-xs mr-2"></i> Load More Destinations
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- HISTORICAL MONUMENTS & HERITAGE SECTION -->
+    <section id="heritage" class="py-20 bg-neutral-900 border-t border-neutral-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-orange-500 text-sm font-bold tracking-widest uppercase block mb-2">Architectural Legacy</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-4">Historical Monuments & Heritage</h2>
+                <p class="text-neutral-400">Discover UNESCO World Heritage wonders, royal palaces, fortresses, and sacred ancient stone sculptures.</p>
+            </div>
+
+            <!-- Heritage Filters -->
+            <div class="flex flex-wrap items-center justify-center gap-2 mb-10" id="heritageFilters">
+                <button onclick="filterHeritage('All')" class="heritage-btn active px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-orange-600 text-white">All Heritage</button>
+                <button onclick="filterHeritage('Ancient Heritage')" class="heritage-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Ancient Heritage</button>
+                <button onclick="filterHeritage('Medieval Architecture')" class="heritage-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Medieval</button>
+                <button onclick="filterHeritage('Religious Sites')" class="heritage-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Religious Sites</button>
+                <button onclick="filterHeritage('UNESCO World Heritage Sites')" class="heritage-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">UNESCO Sites</button>
+                <button onclick="filterHeritage('Forts and Palaces')" class="heritage-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Forts & Palaces</button>
+            </div>
+
+            <!-- Heritage Feature Spotlight Banner -->
+            <div class="relative rounded-3xl overflow-hidden mb-12 shadow-2xl border border-neutral-700 group">
+                <img src="https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1600&q=80" alt="Hampi Ruins" class="w-full h-80 sm:h-96 object-cover group-hover:scale-105 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-transparent p-6 sm:p-10 flex flex-col justify-end">
+                    <span class="bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase w-max mb-3">Featured Heritage Sanctuary</span>
+                    <h3 class="text-2xl sm:text-4xl font-serif font-bold text-white mb-2">Group of Monuments at Hampi, Karnataka</h3>
+                    <p class="text-neutral-300 text-sm sm:text-base max-w-3xl mb-4">The regal seat of the 14th-century Vijayanagara Empire, featuring over 1,600 surviving temple structures, royal complexes, and iconic stone chariots amidst boulder-strewn hills.</p>
+                    <div>
+                        <button onclick="openMonumentModal('Hampi Monuments')" class="orange-gradient text-white px-6 py-2.5 rounded-full font-semibold text-sm shadow-md hover:scale-105 transition-transform">Read Full History</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Heritage Monuments Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="heritageGrid">
+                <!-- Javascript populated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CULTURAL FESTIVALS SECTION -->
+    <section id="festivals" class="py-20 bg-neutral-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-orange-500 text-sm font-bold tracking-widest uppercase block mb-2">Vibrant Traditions</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-4">Cultural Festivals of India</h2>
+                <p class="text-neutral-400">Experience the color, music, dance rituals, and devotion of India's world-famous festivals.</p>
+                <div class="mt-3 text-xs text-orange-400/90 italic bg-orange-500/10 py-1.5 px-4 rounded-full inline-block border border-orange-500/20">
+                    * Note: Festival dates follow the traditional lunar calendar and vary slightly each year. Always check updated schedules when booking trips.
+                </div>
+            </div>
+
+            <!-- Festival Category Filters -->
+            <div class="flex flex-wrap items-center justify-center gap-2 mb-10" id="festivalFilters">
+                <button onclick="filterFestivals('All')" class="festival-btn active px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-orange-600 text-white">All Festivals</button>
+                <button onclick="filterFestivals('Religious Festivals')" class="festival-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Religious</button>
+                <button onclick="filterFestivals('Harvest Festivals')" class="festival-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Harvest</button>
+                <button onclick="filterFestivals('Cultural Festivals')" class="festival-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Cultural</button>
+                <button onclick="filterFestivals('Traditional Fairs')" class="festival-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Fairs & Exhibitions</button>
+            </div>
+
+            <!-- Dynamic Festival Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="festivalsGrid">
+                <!-- Populated via Javascript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- LOCAL CUISINE & FOOD CULTURE SECTION -->
+    <section id="food" class="py-20 bg-neutral-900 border-t border-neutral-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-orange-500 text-sm font-bold tracking-widest uppercase block mb-2">Gastronomic Journey</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-4">Local Cuisine & Food Culture</h2>
+                <p class="text-neutral-400">Savor aromatic spices, ancient recipes, regional specialties, and mouthwatering street foods.</p>
+            </div>
+
+            <!-- Food Filters -->
+            <div class="flex flex-wrap items-center justify-center gap-2 mb-10" id="foodFilters">
+                <button onclick="filterFood('All')" class="food-btn active px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-orange-600 text-white">Show All Dishes</button>
+                <button onclick="filterFood('North')" class="food-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">North Indian</button>
+                <button onclick="filterFood('South')" class="food-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">South Indian</button>
+                <button onclick="filterFood('East')" class="food-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">East Indian</button>
+                <button onclick="filterFood('West')" class="food-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">West Indian</button>
+                <button onclick="filterFood('Central')" class="food-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Central</button>
+                <button onclick="filterFood('Northeast')" class="food-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Northeast</button>
+            </div>
+
+            <!-- Dynamic Food Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="foodGrid">
+                <!-- Dynamic insertion -->
+            </div>
+        </div>
+    </section>
+
+    <!-- IMAGE GALLERY SECTION WITH LIGHTBOX -->
+    <section id="gallery" class="py-20 bg-neutral-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-orange-500 text-sm font-bold tracking-widest uppercase block mb-2">Visual Showcase</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-4">India Tourism Gallery</h2>
+                <p class="text-neutral-400">Immerse yourself in stunning visual stories of landscapes, beaches, monuments, wildlife, and festivals.</p>
+            </div>
+
+            <!-- Gallery Category Filters -->
+            <div class="flex flex-wrap items-center justify-center gap-2 mb-10" id="galleryFilters">
+                <button onclick="filterGallery('All')" class="gallery-btn active px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-orange-600 text-white">All Photos</button>
+                <button onclick="filterGallery('Monuments')" class="gallery-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Monuments</button>
+                <button onclick="filterGallery('Landscapes')" class="gallery-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Landscapes</button>
+                <button onclick="filterGallery('Festivals')" class="gallery-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Festivals</button>
+                <button onclick="filterGallery('Food')" class="gallery-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Cuisine</button>
+                <button onclick="filterGallery('Wildlife')" class="gallery-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-300">Wildlife</button>
+            </div>
+
+            <!-- Masonry Grid Gallery -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="galleryGrid">
+                <!-- Javascript rendering -->
+            </div>
+        </div>
+    </section>
+
+    <!-- LIGHTBOX MODAL FOR GALLERY -->
+    <div id="lightboxModal" class="fixed inset-0 bg-black/95 z-50 hidden flex flex-col justify-between p-4 sm:p-8 backdrop-blur-lg">
+        <div class="flex justify-between items-center text-white z-10">
+            <span id="lightboxCaption" class="text-lg font-serif font-bold text-orange-400">Image Title</span>
+            <button onclick="closeLightbox()" class="text-neutral-400 hover:text-white text-3xl p-2"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <div class="relative flex-1 flex items-center justify-center my-4 overflow-hidden">
+            <button onclick="prevLightboxImage()" class="absolute left-2 sm:left-6 text-white bg-neutral-900/80 hover:bg-orange-600 p-4 rounded-full text-xl transition-all z-10"><i class="fa-solid fa-chevron-left"></i></button>
+            <img id="lightboxImage" src="" alt="Gallery Lightbox" class="max-h-[75vh] max-w-full object-contain rounded-xl shadow-2xl transition-all duration-300">
+            <button onclick="nextLightboxImage()" class="absolute right-2 sm:right-6 text-white bg-neutral-900/80 hover:bg-orange-600 p-4 rounded-full text-xl transition-all z-10"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+        <div class="text-center text-neutral-400 text-xs sm:text-sm">
+            Use Left / Right Keyboard Arrows to navigate • Press ESC to close
+        </div>
+    </div>
+
+    <!-- TRAVEL GUIDE & ITINERARY PLANNER SECTION -->
+    <section id="travel-guide" class="py-20 bg-neutral-900 border-t border-neutral-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-orange-500 text-sm font-bold tracking-widest uppercase block mb-2">Smart Trip Planner</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-4">Travel Tips & Custom Itinerary Planner</h2>
+                <p class="text-neutral-400">Essential guidance for travelers + interactive engine to build custom travel plans instantly.</p>
+            </div>
+
+            <!-- Essential Travel Advice Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-neutral-800 p-6 rounded-2xl border border-neutral-700">
+                    <div class="w-12 h-12 orange-gradient rounded-xl flex items-center justify-center text-white text-xl mb-4">
+                        <i class="fa-solid fa-sun"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Best Seasons to Visit</h3>
+                    <p class="text-neutral-400 text-sm leading-relaxed">October to March offers pleasant weather across most of North and South India. Monsoon season (June-September) is exquisite for Kerala and Meghalaya.</p>
+                </div>
+                <div class="bg-neutral-800 p-6 rounded-2xl border border-neutral-700">
+                    <div class="w-12 h-12 orange-gradient rounded-xl flex items-center justify-center text-white text-xl mb-4">
+                        <i class="fa-solid fa-hand-holding-heart"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Cultural Etiquette</h3>
+                    <p class="text-neutral-400 text-sm leading-relaxed">Remove footwear before entering temples or homes. Dress modestly at religious sanctuaries and ask permission before photographing local artisans.</p>
+                </div>
+                <div class="bg-neutral-800 p-6 rounded-2xl border border-neutral-700">
+                    <div class="w-12 h-12 orange-gradient rounded-xl flex items-center justify-center text-white text-xl mb-4">
+                        <i class="fa-solid fa-train"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Local Transit & Rules</h3>
+                    <p class="text-neutral-400 text-sm leading-relaxed">Indian Railways (IRCTC) offers vast nationwide connectivity. Use verified ride-hailing apps or prepaid taxis at airports for hassle-free transit.</p>
+                </div>
+            </div>
+
+            <!-- ITINERARY GENERATOR FORM CARD -->
+            <div class="bg-neutral-800/90 rounded-3xl p-6 sm:p-10 border border-orange-500/30 shadow-2xl">
+                <h3 class="text-2xl sm:text-3xl font-serif font-bold text-white mb-2 text-center">
+                    <i class="fa-solid fa-wand-magic-sparkles text-orange-500"></i> Generate My Personalized Itinerary
+                </h3>
+                <p class="text-neutral-400 text-center text-sm mb-8">Fill in your travel preferences to generate a custom day-by-day suggested schedule.</p>
+
+                <form id="itineraryForm" onsubmit="generateItinerary(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-300 mb-2">Destination Region/City</label>
+                        <select id="planDestination" class="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-3 text-white focus:border-orange-500 focus:outline-none" required>
+                            <option value="Golden Triangle (Delhi, Agra, Jaipur)">Golden Triangle (Delhi, Agra, Jaipur)</option>
+                            <option value="Kerala Backwaters & Hills">Kerala (Munnar, Alleppey, Kochi)</option>
+                            <option value="Rajasthan Royal Circuits">Royal Rajasthan (Udaipur, Jodhpur)</option>
+                            <option value="Himalayan Wonders (Himachal)">Himalayan Retreat (Shimla, Manali)</option>
+                            <option value="Goa Beaches & Culture">Goa Coastal Experience</option>
+                            <option value="Varanasi & Sacred East">Varanasi & Spiritual East</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-300 mb-2">Starting Location</label>
+                        <input type="text" id="planStartLocation" placeholder="e.g. New Delhi, Mumbai, London" class="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-3 text-white focus:border-orange-500 focus:outline-none" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-300 mb-2">Travel Style</label>
+                        <select id="planStyle" class="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-3 text-white focus:border-orange-500 focus:outline-none">
+                            <option value="Heritage & Architecture">Heritage & Architecture</option>
+                            <option value="Adventure & Outdoors">Adventure & Outdoors</option>
+                            <option value="Nature & Wildlife">Nature & Wildlife</option>
+                            <option value="Culinary & Street Food">Culinary & Street Food</option>
+                            <option value="Culture & Festivals">Culture & Festivals</option>
+                            <option value="Family Relaxation">Family Relaxation</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-300 mb-2">Start Date</label>
+                        <input type="date" id="planStartDate" class="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-3 text-white focus:border-orange-500 focus:outline-none" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-300 mb-2">Duration (Days)</label>
+                        <input type="number" id="planDays" min="1" max="15" value="5" class="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-3 text-white focus:border-orange-500 focus:outline-none" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-300 mb-2">Estimated Budget Level</label>
+                        <select id="planBudget" class="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-3 text-white focus:border-orange-500 focus:outline-none">
+                            <option value="Backpacker / Budget">Budget (₹2,500/day)</option>
+                            <option value="Comfort / Mid-range">Comfort (₹6,000/day)</option>
+                            <option value="Luxury Royal Palaces">Luxury (₹18,000+/day)</option>
+                        </select>
+                    </div>
+
+                    <div class="md:col-span-2 lg:col-span-3 text-center mt-4">
+                        <button type="submit" class="orange-gradient text-white px-10 py-4 rounded-full font-bold text-base shadow-xl shadow-orange-500/30 hover:scale-105 transition-all">
+                            <i class="fa-solid fa-compass"></i> Create My Travel Plan
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Itinerary Result Output Box -->
+                <div id="itineraryResult" class="hidden mt-10 pt-8 border-t border-neutral-700">
+                    <!-- Javascript populated -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section class="py-20 bg-neutral-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-orange-500 text-sm font-bold tracking-widest uppercase block mb-2">Traveler Insights</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-4">Stories From Globetrotters</h2>
+                <p class="text-neutral-400">Read sample feedback from international travelers who explored India's iconic monuments.</p>
+            </div>
+
+            <!-- Testimonials Carousel Container -->
+            <div class="max-w-4xl mx-auto relative">
+                <div id="testimonialCard" class="bg-neutral-900 border border-neutral-800 p-8 sm:p-12 rounded-3xl shadow-2xl text-center relative">
+                    <i class="fa-solid fa-quote-left text-orange-500/30 text-6xl absolute top-6 left-6"></i>
+                    <div id="testimonialAvatar" class="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-orange-500 overflow-hidden shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Traveler" class="w-full h-full object-cover">
+                    </div>
+                    <div id="testimonialRating" class="text-amber-400 text-lg mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p id="testimonialText" class="text-neutral-200 text-lg sm:text-xl font-serif italic mb-6">
+                        "Visiting Rajasthan through Explore India was a dream come true. The majestic palaces, sunset deserts, and royal cuisine blew us away!"
+                    </p>
+                    <h4 id="testimonialName" class="text-white font-bold text-lg">Sophia Martinez</h4>
+                    <span id="testimonialLocation" class="text-orange-400 text-xs uppercase tracking-wider font-semibold">Visited Jaipur & Udaipur</span>
+                </div>
+
+                <!-- Slider Controls -->
+                <div class="flex items-center justify-center gap-4 mt-6">
+                    <button onclick="prevTestimonial()" class="p-3 bg-neutral-800 hover:bg-orange-600 rounded-full text-white transition-colors" aria-label="Previous Testimonial"><i class="fa-solid fa-arrow-left"></i></button>
+                    <span id="testimonialIndex" class="text-xs font-mono text-neutral-400">1 / 3</span>
+                    <button onclick="nextTestimonial()" class="p-3 bg-neutral-800 hover:bg-orange-600 rounded-full text-white transition-colors" aria-label="Next Testimonial"><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ ACCORDION SECTION -->
+    <section class="py-20 bg-neutral-900 border-t border-neutral-800">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-orange-500 text-sm font-bold tracking-widest uppercase block mb-2">Helpful Information</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Frequently Asked Questions</h2>
+                <p class="text-neutral-400">Common queries regarding monument tickets, ideal seasons, and travel guidelines.</p>
+            </div>
+
+            <div class="space-y-4" id="faqAccordion">
+                <!-- FAQ Item 1 -->
+                <div class="bg-neutral-800 rounded-2xl border border-neutral-700 overflow-hidden">
+                    <button onclick="toggleFaq(1)" class="w-full p-5 text-left font-semibold text-white flex justify-between items-center focus:outline-none">
+                        <span>What is the best time of year to visit India?</span>
+                        <i id="faqIcon-1" class="fa-solid fa-chevron-down text-orange-500 transition-transform"></i>
+                    </button>
+                    <div id="faqAns-1" class="hidden px-5 pb-5 text-neutral-300 text-sm leading-relaxed border-t border-neutral-700/50 pt-3">
+                        The ideal general tourist season runs from October to March when temperatures are mild and pleasant across Delhi, Rajasthan, Agra, and South India. Himalayan regions like Himachal Pradesh and Ladakh are best visited from May to September.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="bg-neutral-800 rounded-2xl border border-neutral-700 overflow-hidden">
+                    <button onclick="toggleFaq(2)" class="w-full p-5 text-left font-semibold text-white flex justify-between items-center focus:outline-none">
+                        <span>Which destinations are ideal for first-time international travelers?</span>
+                        <i id="faqIcon-2" class="fa-solid fa-chevron-down text-orange-500 transition-transform"></i>
+                    </button>
+                    <div id="faqAns-2" class="hidden px-5 pb-5 text-neutral-300 text-sm leading-relaxed border-t border-neutral-700/50 pt-3">
+                        The "Golden Triangle" circuit (Delhi, Agra, and Jaipur) is the most popular choice for first-time visitors, offering iconic monuments like the Taj Mahal alongside vibrant bazaars and palaces. Kerala is also ideal for a serene, tropical introduction.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="bg-neutral-800 rounded-2xl border border-neutral-700 overflow-hidden">
+                    <button onclick="toggleFaq(3)" class="w-full p-5 text-left font-semibold text-white flex justify-between items-center focus:outline-none">
+                        <span>Are monument opening hours uniform throughout the year?</span>
+                        <i id="faqIcon-3" class="fa-solid fa-chevron-down text-orange-500 transition-transform"></i>
+                    </button>
+                    <div id="faqAns-3" class="hidden px-5 pb-5 text-neutral-300 text-sm leading-relaxed border-t border-neutral-700/50 pt-3">
+                        Most ASI (Archaeological Survey of India) national monuments are open from sunrise to sunset. However, specific monuments like the Taj Mahal remain closed on Fridays. It is always recommended to pre-book ticket passes online via official ASI portals.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="bg-neutral-800 rounded-2xl border border-neutral-700 overflow-hidden">
+                    <button onclick="toggleFaq(4)" class="w-full p-5 text-left font-semibold text-white flex justify-between items-center focus:outline-none">
+                        <span>What guidelines should I keep in mind regarding local customs?</span>
+                        <i id="faqIcon-4" class="fa-solid fa-chevron-down text-orange-500 transition-transform"></i>
+                    </button>
+                    <div id="faqAns-4" class="hidden px-5 pb-5 text-neutral-300 text-sm leading-relaxed border-t border-neutral-700/50 pt-3">
+                        Respect religious sanctuaries by removing shoes before entry. Covering shoulders and knees is appropriate in temples and mosques. Greeting with a traditional "Namaste" (palms pressed together) is universally appreciated.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="py-20 bg-neutral-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Contact Info & Map placeholder -->
+                <div>
+                    <span class="text-orange-500 text-sm font-bold tracking-widest uppercase block mb-2">Get in Touch</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-6">Contact Tourism Desk</h2>
+                    <p class="text-neutral-400 mb-8 leading-relaxed">
+                        Have questions regarding travel permits, heritage monument schedules, or guided group tours? Send us a message and our tourism desk will assist you.
+                    </p>
+
+                    <div class="space-y-6 mb-8">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 orange-gradient rounded-xl flex items-center justify-center text-white text-xl shrink-0"><i class="fa-solid fa-location-dot"></i></div>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">Headquarters</h4>
+                                <p class="text-neutral-400 text-sm">Janpath, Connaught Place, New Delhi, India 110001</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 orange-gradient rounded-xl flex items-center justify-center text-white text-xl shrink-0"><i class="fa-solid fa-envelope"></i></div>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">Email Support</h4>
+                                <p class="text-neutral-400 text-sm">info@exploreindia-portal.gov.in</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 orange-gradient rounded-xl flex items-center justify-center text-white text-xl shrink-0"><i class="fa-solid fa-phone"></i></div>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">Toll-Free Helpline</h4>
+                                <p class="text-neutral-400 text-sm">1800-11-1363 (24x7 Multi-lingual)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map graphic card -->
+                    <div class="rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 p-4 text-center">
+                        <i class="fa-solid fa-map-location-dot text-4xl text-orange-500 mb-2"></i>
+                        <h5 class="text-white font-bold text-sm">Interactive India Travel Network</h5>
+                        <p class="text-xs text-neutral-400">Tourism Help Desks available across all major airports & rail terminals.</p>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="bg-neutral-900 p-8 rounded-3xl border border-neutral-800 shadow-2xl">
+                    <h3 class="text-2xl font-serif font-bold text-white mb-6">Send Inquiry</h3>
+                    <form id="contactForm" onsubmit="handleContactSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-neutral-300 uppercase mb-1">Full Name</label>
+                            <input type="text" id="contactName" placeholder="John Doe" class="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-neutral-300 uppercase mb-1">Email Address</label>
+                            <input type="email" id="contactEmail" placeholder="john@example.com" class="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-neutral-300 uppercase mb-1">Subject</label>
+                            <input type="text" id="contactSubject" placeholder="Monument Permit Query" class="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-neutral-300 uppercase mb-1">Your Message</label>
+                            <textarea id="contactMessage" rows="4" placeholder="How can we assist your trip?" class="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500" required></textarea>
+                        </div>
+                        <button type="submit" class="w-full orange-gradient text-white font-bold py-3.5 rounded-xl shadow-lg hover:opacity-95 transition-all">Send Message</button>
+                    </form>
+
+                    <div id="contactStatus" class="hidden mt-4 text-center p-3 rounded-xl text-sm font-medium"></div>
+                    <p class="text-[11px] text-neutral-500 mt-3 text-center">* Client-side validated form. Integrates directly with backend APIs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER SECTION -->
+    <footer class="bg-neutral-950 border-t border-neutral-800 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+                <!-- Col 1: Logo & Info -->
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 rounded-lg orange-gradient flex items-center justify-center text-white text-base">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <span class="font-serif font-bold text-xl text-white">EXPLORE <span class="text-orange-500">INDIA</span></span>
+                    </div>
+                    <p class="text-neutral-400 text-sm leading-relaxed mb-6">
+                        Your official digital gateway to experiencing India's rich cultural heritage, magnificent monuments, authentic flavors, and breathtaking landscapes.
+                    </p>
+                    <div class="flex gap-3">
+                        <a href="javascript:void(0)" class="w-9 h-9 rounded-full bg-neutral-800 hover:bg-orange-600 text-white flex items-center justify-center transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="javascript:void(0)" class="w-9 h-9 rounded-full bg-neutral-800 hover:bg-orange-600 text-white flex items-center justify-center transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="javascript:void(0)" class="w-9 h-9 rounded-full bg-neutral-800 hover:bg-orange-600 text-white flex items-center justify-center transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="javascript:void(0)" class="w-9 h-9 rounded-full bg-neutral-800 hover:bg-orange-600 text-white flex items-center justify-center transition-colors"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation Links -->
+                <div>
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4 border-b border-orange-500/30 pb-2 inline-block">Quick Navigation</h4>
+                    <ul class="space-y-2 text-sm text-neutral-400">
+                        <li><a href="#home" class="hover:text-orange-500 transition-colors">Home Portal</a></li>
+                        <li><a href="#destinations" class="hover:text-orange-500 transition-colors">Regional Destinations</a></li>
+                        <li><a href="#heritage" class="hover:text-orange-500 transition-colors">Historical Monuments</a></li>
+                        <li><a href="#festivals" class="hover:text-orange-500 transition-colors">Cultural Festivals</a></li>
+                        <li><a href="#food" class="hover:text-orange-500 transition-colors">Food Culture</a></li>
+                        <li><a href="#travel-guide" class="hover:text-orange-500 transition-colors">Trip Itinerary Generator</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Popular Regions -->
+                <div>
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4 border-b border-orange-500/30 pb-2 inline-block">Featured Circuits</h4>
+                    <ul class="space-y-2 text-sm text-neutral-400">
+                        <li><a href="#destinations" onclick="filterDestinations('North')" class="hover:text-orange-500 transition-colors">North India & Himalayas</a></li>
+                        <li><a href="#destinations" onclick="filterDestinations('South')" class="hover:text-orange-500 transition-colors">South India Temple Trails</a></li>
+                        <li><a href="#destinations" onclick="filterDestinations('West')" class="hover:text-orange-500 transition-colors">Royal Rajasthan Forts</a></li>
+                        <li><a href="#destinations" onclick="filterDestinations('East')" class="hover:text-orange-500 transition-colors">Eastern Wildlife & Culture</a></li>
+                        <li><a href="#destinations" onclick="filterDestinations('Northeast')" class="hover:text-orange-500 transition-colors">Northeast Living Bridges</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Newsletter -->
+                <div>
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4 border-b border-orange-500/30 pb-2 inline-block">Newsletter Digest</h4>
+                    <p class="text-neutral-400 text-xs mb-4">Subscribe to receive monthly travel guides, festival calendars, and heritage updates.</p>
+                    <form onsubmit="handleNewsletter(event)" class="space-y-2">
+                        <input type="email" id="newsletterEmail" placeholder="Enter your email" class="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500" required>
+                        <button type="submit" class="w-full orange-gradient text-white text-xs font-bold py-2.5 rounded-xl hover:opacity-95 transition-all">Subscribe Now</button>
+                    </form>
+                    <div id="newsletterStatus" class="hidden text-xs text-green-400 mt-2"></div>
+                </div>
+            </div>
+
+            <div class="border-t border-neutral-800 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-500">
+                <p>&copy; 2026 EXPLORE INDIA Portal. All Rights Reserved. Designed for Travelers Worldwide.</p>
+                <div class="flex gap-4 mt-4 sm:mt-0">
+                    <a href="javascript:void(0)" class="hover:text-neutral-300">Privacy Policy</a>
+                    <a href="javascript:void(0)" class="hover:text-neutral-300">Terms of Service</a>
+                    <a href="javascript:void(0)" class="hover:text-neutral-300">ASI Portal</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BACK TO TOP BUTTON -->
+    <button onclick="scrollToTop()" id="backToTopBtn" aria-label="Back to top" class="fixed bottom-6 right-6 orange-gradient text-white p-3.5 rounded-full shadow-2xl hover:scale-110 transition-all opacity-0 pointer-events-none z-40">
+        <i class="fa-solid fa-arrow-up text-lg"></i>
+    </button>
+
+    <!-- GENERIC DETAIL MODAL (USED FOR DESTINATIONS, MONUMENTS, FESTIVALS, DISHES) -->
+    <div id="detailModal" class="fixed inset-0 bg-black/85 z-50 hidden flex items-center justify-center p-4 backdrop-blur-md">
+        <div class="bg-neutral-900 border border-neutral-700 w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl relative max-h-[90vh] flex flex-col">
+            <button onclick="closeDetailModal()" aria-label="Close details" class="absolute top-4 right-4 bg-black/60 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-orange-600 transition-colors z-20">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div id="modalContent" class="overflow-y-auto">
+                <!-- JavaScript Rendered Detail View -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT APPLICATION CODE -->
+    <script>
+        /* ==========================================================================
+           1. DATA STRUCTURES (Destinations, Monuments, Festivals, Foods, Gallery)
+           ========================================================================== */
+
+        const destinationsData = [
+            {
+                id: "dest-1",
+                name: "Taj Mahal",
+                location: "Agra, Uttar Pradesh",
+                region: "North",
+                category: "UNESCO World Heritage Site",
+                bestTime: "October - March",
+                image: "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80",
+                description: "An ivory-white marble mausoleum on the south bank of the Yamuna River, commissioned in 1632 by the Mughal emperor Shah Jahan."
+            },
+            {
+                id: "dest-2",
+                name: "Jaipur Pink City",
+                location: "Jaipur, Rajasthan",
+                region: "North",
+                category: "Forts & Royal Palaces",
+                bestTime: "November - February",
+                image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80",
+                description: "The capital of Rajasthan renowned for Hawa Mahal, Amer Fort, vibrant bazaars, and regal pink terracotta architecture."
+            },
+            {
+                id: "dest-3",
+                name: "Munnar Tea Gardens",
+                location: "Munnar, Kerala",
+                region: "South",
+                category: "Hill Station & Nature",
+                bestTime: "September - May",
+                image: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80",
+                description: "A serene hill station situated in the Western Ghats mountain range surrounded by rolling green tea plantations."
+            },
+            {
+                id: "dest-4",
+                name: "Hampi Sacred Ruins",
+                location: "Hampi, Karnataka",
+                region: "South",
+                category: "Archaeological Sanctuary",
+                bestTime: "October - March",
+                image: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=800&q=80",
+                description: "Ancient capital of the Vijayanagara Empire known for its boulder-scattered landscape, Virupaksha temple, and stone chariots."
+            },
+            {
+                id: "dest-5",
+                name: "Darjeeling Tea Hills",
+                location: "Darjeeling, West Bengal",
+                region: "East",
+                category: "Hill Station & Views",
+                bestTime: "March - May & Oct - Dec",
+                image: "https://images.unsplash.com/photo-1544634076-a196a1f457f8?auto=format&fit=crop&w=800&q=80",
+                description: "Famous for its world-renowned Darjeeling tea, toy train railway, and sweeping views of Mount Kanchenjunga."
+            },
+            {
+                id: "dest-6",
+                name: "Gateway of India",
+                location: "Mumbai, Maharashtra",
+                region: "West",
+                category: "Coastal City Heritage",
+                bestTime: "November - February",
+                image: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=800&q=80",
+                description: "An iconic 20th-century arch monument constructed overlooking the Arabian Sea in bustling downtown Mumbai."
+            },
+            {
+                id: "dest-7",
+                name: "Khajuraho Temples",
+                location: "Khajuraho, Madhya Pradesh",
+                region: "Central",
+                category: "Ancient Temple Art",
+                bestTime: "October - March",
+                image: "https://images.unsplash.com/photo-1606210122158-e32512a8a1c9?auto=format&fit=crop&w=800&q=80",
+                description: "Group of Hindu and Jain temples famous for Nagara-style architectural symbolism and expressive stone sculptures."
+            },
+            {
+                id: "dest-8",
+                name: "Living Root Bridges",
+                location: "Cherrapunji, Meghalaya",
+                region: "Northeast",
+                category: "Eco Wonder & Nature",
+                bestTime: "October - April",
+                image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+                description: "Handcrafted rubber tree aerial root bridges woven across rainforest rivers by the indigenous Khasi tribes."
+            },
+            {
+                id: "dest-9",
+                name: "Varanasi Ghats",
+                location: "Varanasi, Uttar Pradesh",
+                region: "North",
+                category: "Spiritual Heritage",
+                bestTime: "October - March",
+                image: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=800&q=80",
+                description: "One of the world's oldest continually inhabited cities, sacred for its Ganges riverfront rituals and evening Ganga Aarti."
+            }
+        ];
+
+        const monumentsData = [
+            {
+                id: "mon-1",
+                name: "Taj Mahal",
+                category: "UNESCO World Heritage Sites",
+                period: "1632 - 1653 AD (Mughal Era)",
+                style: "Mughal & Indo-Islamic Architecture",
+                location: "Agra, Uttar Pradesh",
+                image: "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80",
+                summary: "Built by Shah Jahan in memory of Mumtaz Mahal. Features pure white Makrana marble, calligraphy inlay, and symmetrical gardens."
+            },
+            {
+                id: "mon-2",
+                name: "Red Fort",
+                category: "Forts and Palaces",
+                period: "1639 - 1648 AD",
+                style: "Mughal Fortified Architecture",
+                location: "Old Delhi",
+                image: "https://images.unsplash.com/photo-1585135497273-1a86b09fe707?auto=format&fit=crop&w=800&q=80",
+                summary: "Historic red sandstone fortress served as the main residence of Mughal emperors for nearly 200 years."
+            },
+            {
+                id: "mon-3",
+                name: "Qutub Minar",
+                category: "Medieval Architecture",
+                period: "1192 AD (Delhi Sultanate)",
+                style: "Indo-Islamic Minaret",
+                location: "Mehrauli, New Delhi",
+                image: "https://images.unsplash.com/photo-1545231027-637d2f6210f8?auto=format&fit=crop&w=800&q=80",
+                summary: "A 73-meter tall fluted red sandstone tower and UNESCO site surrounded by ancient ruins including the non-rusting Iron Pillar."
+            },
+            {
+                id: "mon-4",
+                name: "Hampi Monuments",
+                category: "Ancient Heritage",
+                period: "1336 - 1565 AD",
+                style: "Dravidian Vijayanagara Architecture",
+                location: "Vijayanagara District, Karnataka",
+                image: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=800&q=80",
+                summary: "Sprawling capital ruins featuring the iconic Vitthala Stone Chariot, Virupaksha Temple, Elephant Stables, and monolith statues."
+            },
+            {
+                id: "mon-5",
+                name: "Ajanta & Ellora Caves",
+                category: "Ancient Heritage",
+                period: "2nd Century BCE - 10th Century AD",
+                style: "Rock-Cut Cave Architecture",
+                location: "Chhatrapati Sambhajinagar, Maharashtra",
+                image: "https://images.unsplash.com/photo-1609946782711-f116a84f3e67?auto=format&fit=crop&w=800&q=80",
+                summary: "Monumental cave complex featuring Buddhist fresco paintings and the grand Kailasa Temple carved from a single monolithic rock."
+            },
+            {
+                id: "mon-6",
+                name: "Konark Sun Temple",
+                category: "Religious Sites",
+                period: "1250 AD (Eastern Ganga Dynasty)",
+                style: "Kalinga Architecture",
+                location: "Konark, Odisha",
+                image: "https://images.unsplash.com/photo-1628108422401-d70eeef867bd?auto=format&fit=crop&w=800&q=80",
+                summary: "Designed as a gigantic stone chariot dedicated to Sun God Surya, complete with 12 pairs of exquisitely carved stone wheels."
+            }
+        ];
+
+        const festivalsData = [
+            {
+                id: "fest-1",
+                name: "Diwali — Festival of Lights",
+                region: "Pan-India",
+                category: "Religious Festivals",
+                season: "October / November",
+                image: "https://images.unsplash.com/photo-1514222709107-a180c68d72b4?auto=format&fit=crop&w=800&q=80",
+                description: "Celebrates the victory of light over darkness with clay lamps (diyas), fireworks, sweets, and family gatherings."
+            },
+            {
+                id: "fest-2",
+                name: "Holi — Festival of Colors",
+                region: "North & Central India",
+                category: "Cultural Festivals",
+                season: "March",
+                image: "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80",
+                description: "A joyful spring celebration of vibrant powdered colors, music, dancing, and festive gujiya sweets."
+            },
+            {
+                id: "fest-3",
+                name: "Onam Harvest Festival",
+                region: "Kerala",
+                category: "Harvest Festivals",
+                season: "August / September",
+                image: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80",
+                description: "State festival of Kerala featuring snake boat races (Vallamkali), floral carpets (Pookalam), and 26-dish Sadya feasts."
+            },
+            {
+                id: "fest-4",
+                name: "Pushkar Camel Fair",
+                region: "Pushkar, Rajasthan",
+                category: "Traditional Fairs",
+                season: "November",
+                image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80",
+                description: "One of the world's largest livestock trading fairs combined with folk dance, desert camping, and hot air balloons."
+            },
+            {
+                id: "fest-5",
+                name: "Durga Puja",
+                region: "West Bengal & Kolkata",
+                category: "Religious Festivals",
+                season: "September / October",
+                image: "https://images.unsplash.com/photo-1568832359672-e36cf5d74f54?auto=format&fit=crop&w=800&q=80",
+                description: "Grand art exhibition and worship of Goddess Durga featuring ornate neighborhood pandals and traditional Dhunuchi dance."
+            },
+            {
+                id: "fest-6",
+                name: "Hornbill Festival",
+                region: "Kohima, Nagaland",
+                category: "Cultural Festivals",
+                season: "December 1 - 10",
+                image: "https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=800&q=80",
+                description: "'Festival of Festivals' gathering 17 indigenous Naga tribes displaying traditional music, attire, archery, and war dances."
+            }
+        ];
+
+        const foodData = [
+            {
+                id: "food-1",
+                name: "Crispy Masala Dosa",
+                region: "South",
+                ingredients: "Fermented Rice Batter, Potato Masala, Coconut Chutney, Sambar",
+                image: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=800&q=80",
+                description: "A thin golden fermented rice crepe stuffed with spiced mashed potatoes, served piping hot with authentic coconut chutneys."
+            },
+            {
+                id: "food-2",
+                name: "Amritsari Chole Bhature",
+                region: "North",
+                ingredients: "Spiced Chickpeas, Fluffy Fried Bread, Pickled Onions, Mint Chutney",
+                image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=800&q=80",
+                description: "A classic North Indian comfort delicacy combining tangy spiced chickpeas with balloon-like fluffy fried sourdough bread."
+            },
+            {
+                id: "food-3",
+                name: "Hyderabadi Royal Biryani",
+                region: "South",
+                ingredients: "Basmati Rice, Marinated Meats, Saffron, Fried Shallots, Whole Spices",
+                image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80",
+                description: "A regal Nizam dish made with fragrant basmati rice layered with marinated tender meats and slow dum-cooked with whole spices."
+            },
+            {
+                id: "food-4",
+                name: "Bengali Mustard Fish Curry",
+                region: "East",
+                ingredients: "Freshwater Hilsa/Rahu Fish, Shorshe (Mustard) Paste, Green Chillies, Nigella Seeds",
+                image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=800&q=80",
+                description: "A beloved staple from West Bengal featuring tender fish poached in a pungent mustard and green chili gravy."
+            },
+            {
+                id: "food-5",
+                name: "Mumbai Pav Bhaji",
+                region: "West",
+                ingredients: "Mashed Vegetable Curry, Buttered Soft Buns, Chopped Onions, Lemon",
+                image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80",
+                description: "Iconic street food from Mumbai consisting of spicy mashed vegetables cooked with generous butter and served with toasted pav buns."
+            },
+            {
+                id: "food-6",
+                name: "Indore Poha & Jalebi",
+                region: "Central",
+                ingredients: "Flattened Rice, Mustard Seeds, Fennel, Sev, Crispy Sweet Jalebis",
+                image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80",
+                description: "A light, fluffy steam-cooked breakfast dish sprinkled with spicy crunchy Sev, paired with piping hot sweet spiral Jalebis."
+            }
+        ];
+
+        const galleryData = [
+            { title: "Taj Mahal Sunset", category: "Monuments", src: "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80" },
+            { title: "Kerala Backwaters Houseboat", category: "Landscapes", src: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80" },
+            { title: "Jaipur City Palace View", category: "Monuments", src: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80" },
+            { title: "Holi Colors Celebration", category: "Festivals", src: "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80" },
+            { title: "South Indian Thali", category: "Food", src: "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?auto=format&fit=crop&w=800&q=80" },
+            { title: "Bengal Tiger in Wildlife Reserve", category: "Wildlife", src: "https://images.unsplash.com/photo-1561731216-c3a4d99437d5?auto=format&fit=crop&w=800&q=80" },
+            { title: "Varanasi Ghat Aarti", category: "Festivals", src: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=800&q=80" },
+            { title: "Himalayan Snow Peaks", category: "Landscapes", src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" }
+        ];
+
+        const testimonialsData = [
+            {
+                name: "Sophia Martinez",
+                location: "Visited Jaipur & Udaipur",
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+                rating: 5,
+                text: "Visiting Rajasthan through Explore India was a dream come true. The majestic palaces, desert camps, and royal cuisine blew us away!"
+            },
+            {
+                name: "David Chen",
+                location: "Visited Kerala & Hampi",
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+                rating: 5,
+                text: "The tranquility of floating on a houseboat in Alleppey coupled with ancient rock carvings in Hampi made this trip unforgettable."
+            },
+            {
+                name: "Elena Rostova",
+                location: "Visited Taj Mahal & Varanasi",
+                avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
+                rating: 5,
+                text: "Standing before the Taj Mahal at sunrise was a deeply emotional moment. The culture, hospitality, and colors of India are unparalleled."
+            }
+        ];
+
+
+        /* ==========================================================================
+           2. LOCAL STORAGE FAVORITES MANAGEMENT
+           ========================================================================== */
+
+        let savedFavorites = JSON.parse(localStorage.getItem('explore_india_favs')) || [];
+
+        function updateFavoritesBadge() {
+            const badge = document.getElementById('favCountBadge');
+            if (badge) badge.textContent = savedFavorites.length;
+        }
+
+        function isFavorite(id) {
+            return savedFavorites.some(item => item.id === id);
+        }
+
+        function toggleFavorite(itemObj, event) {
+            if (event) event.stopPropagation();
+            
+            const index = savedFavorites.findIndex(item => item.id === itemObj.id);
+            if (index > -1) {
+                savedFavorites.splice(index, 1);
+            } else {
+                savedFavorites.push(itemObj);
+            }
+            
+            localStorage.setItem('explore_india_favs', JSON.stringify(savedFavorites));
+            updateFavoritesBadge();
+            renderDestinations(); // Refresh grid state
+            renderFavoritesList();
+        }
+
+        function clearAllFavorites() {
+            if (confirm("Are you sure you want to clear all saved favorites?")) {
+                savedFavorites = [];
+                localStorage.setItem('explore_india_favs', JSON.stringify(savedFavorites));
+                updateFavoritesBadge();
+                renderDestinations();
+                renderFavoritesList();
+            }
+        }
+
+        function renderFavoritesList() {
+            const container = document.getElementById('favoritesList');
+            if (!container) return;
+
+            if (savedFavorites.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-neutral-400">
+                        <i class="fa-regular fa-heart text-4xl mb-3 text-neutral-600"></i>
+                        <p>No saved destinations yet. Click the heart icon on any destination to save it here!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = savedFavorites.map(item => `
+                <div class="flex items-center justify-between bg-neutral-800 p-3.5 rounded-xl border border-neutral-700">
+                    <div class="flex items-center gap-4">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 rounded-lg object-cover">
+                        <div>
+                            <h4 class="text-white font-bold text-base">${item.name}</h4>
+                            <p class="text-xs text-orange-400"><i class="fa-solid fa-location-dot"></i> ${item.location || item.region}</p>
+                        </div>
+                    </div>
+                    <button onclick='toggleFavorite(${JSON.stringify(item)}, event)' class="text-red-500 hover:text-red-400 p-2 text-lg" title="Remove">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function toggleFavoritesModal() {
+            const modal = document.getElementById('favoritesModal');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) {
+                renderFavoritesList();
+            }
+        }
+
+
+        /* ==========================================================================
+           3. DYNAMIC RENDERING (Destinations, Monuments, Festivals, Food, Gallery)
+           ========================================================================== */
+
+        let currentRegionFilter = 'All';
+        let itemsToShow = 6;
+
+        function renderDestinations() {
+            const grid = document.getElementById('destinationsGrid');
+            if (!grid) return;
+
+            let filtered = destinationsData;
+            if (currentRegionFilter !== 'All') {
+                filtered = destinationsData.filter(d => d.region.toLowerCase() === currentRegionFilter.toLowerCase());
+            }
+
+            const visible = filtered.slice(0, itemsToShow);
+
+            grid.innerHTML = visible.map(item => {
+                const fav = isFavorite(item.id);
+                return `
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden shadow-xl hover:border-orange-500/50 transition-all duration-300 group flex flex-col justify-between">
+                    <div>
+                        <div class="relative overflow-hidden h-52">
+                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
+                            <span class="absolute top-3 left-3 bg-neutral-950/80 text-orange-400 text-xs font-semibold px-3 py-1 rounded-full border border-orange-500/30 backdrop-blur-md">
+                                ${item.category}
+                            </span>
+                            <button onclick='toggleFavorite(${JSON.stringify(item)}, event)' class="absolute top-3 right-3 w-9 h-9 rounded-full bg-neutral-900/80 backdrop-blur-md text-white flex items-center justify-center hover:scale-110 transition-transform">
+                                <i class="${fav ? 'fa-solid text-red-500' : 'fa-regular text-neutral-300'} fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-xs text-orange-400 font-semibold mb-1 uppercase tracking-wider">
+                                <i class="fa-solid fa-location-dot"></i> ${item.location}
+                            </div>
+                            <h3 class="text-xl font-bold font-serif text-white mb-2">${item.name}</h3>
+                            <p class="text-neutral-400 text-xs sm:text-sm line-clamp-2 mb-4 leading-relaxed">${item.description}</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-0 border-t border-neutral-800/60 mt-2 flex items-center justify-between">
+                        <span class="text-[11px] text-neutral-400"><i class="fa-regular fa-calendar-check text-orange-500"></i> ${item.bestTime}</span>
+                        <button onclick="openDestinationModal('${item.id}')" class="text-xs text-orange-400 font-semibold hover:text-orange-300 flex items-center gap-1">
+                            View Details <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            const loadBtn = document.getElementById('loadMoreBtn');
+            if (loadBtn) {
+                if (itemsToShow >= filtered.length) {
+                    loadBtn.style.display = 'none';
+                } else {
+                    loadBtn.style.display = 'inline-block';
+                }
+            }
+        }
+
+        function filterDestinations(region) {
+            currentRegionFilter = region;
+            itemsToShow = 6;
+            
+            document.querySelectorAll('.region-btn').forEach(btn => {
+                btn.classList.remove('bg-orange-600', 'text-white');
+                btn.classList.add('bg-neutral-800', 'text-neutral-300');
+                if (btn.textContent.trim().includes(region) || (region === 'All' && btn.textContent.includes('All'))) {
+                    btn.classList.add('bg-orange-600', 'text-white');
+                    btn.classList.remove('bg-neutral-800', 'text-neutral-300');
+                }
+            });
+
+            renderDestinations();
+        }
+
+        function loadMoreDestinations() {
+            itemsToShow += 3;
+            renderDestinations();
+        }
+
+        // HERITAGE MONUMENTS
+        let currentHeritageFilter = 'All';
+        function renderHeritage() {
+            const grid = document.getElementById('heritageGrid');
+            if (!grid) return;
+
+            let filtered = monumentsData;
+            if (currentHeritageFilter !== 'All') {
+                filtered = monumentsData.filter(m => m.category === currentHeritageFilter);
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="bg-neutral-800/80 border border-neutral-700/70 rounded-2xl p-6 shadow-xl hover:border-orange-500/40 transition-all flex flex-col justify-between">
+                    <div>
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-48 object-cover rounded-xl mb-4" loading="lazy">
+                        <span class="text-xs font-bold text-orange-400 uppercase tracking-widest block mb-1">${item.category}</span>
+                        <h3 class="text-xl font-serif font-bold text-white mb-2">${item.name}</h3>
+                        <p class="text-neutral-300 text-xs mb-3"><i class="fa-solid fa-landmark text-orange-500"></i> ${item.style}</p>
+                        <p class="text-neutral-400 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">${item.summary}</p>
+                    </div>
+                    <button onclick="openMonumentModal('${item.name}')" class="w-full bg-neutral-900 hover:bg-orange-600 text-white text-xs font-semibold py-2.5 rounded-xl border border-neutral-700 transition-colors">
+                        Read Detailed History
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function filterHeritage(cat) {
+            currentHeritageFilter = cat;
+            document.querySelectorAll('.heritage-btn').forEach(btn => {
+                btn.classList.remove('bg-orange-600', 'text-white');
+                btn.classList.add('bg-neutral-800', 'text-neutral-300');
+                if (btn.textContent.trim().includes(cat) || (cat === 'All' && btn.textContent.includes('All'))) {
+                    btn.classList.add('bg-orange-600', 'text-white');
+                    btn.classList.remove('bg-neutral-800', 'text-neutral-300');
+                }
+            });
+            renderHeritage();
+        }
+
+        // FESTIVALS
+        let currentFestivalFilter = 'All';
+        function renderFestivals() {
+            const grid = document.getElementById('festivalsGrid');
+            if (!grid) return;
+
+            let filtered = festivalsData;
+            if (currentFestivalFilter !== 'All') {
+                filtered = festivalsData.filter(f => f.category === currentFestivalFilter);
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden shadow-xl hover:border-orange-500/50 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48">
+                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" loading="lazy">
+                            <span class="absolute bottom-3 right-3 bg-orange-600 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">
+                                ${item.season}
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <span class="text-xs text-orange-400 font-semibold block mb-1">${item.region}</span>
+                            <h3 class="text-xl font-serif font-bold text-white mb-2">${item.name}</h3>
+                            <p class="text-neutral-400 text-xs sm:text-sm leading-relaxed mb-4">${item.description}</p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="openFestivalModal('${item.name}')" class="w-full orange-gradient text-white text-xs font-bold py-2.5 rounded-xl shadow hover:opacity-95 transition-opacity">
+                            Discover Festival Rituals
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterFestivals(cat) {
+            currentFestivalFilter = cat;
+            document.querySelectorAll('.festival-btn').forEach(btn => {
+                btn.classList.remove('bg-orange-600', 'text-white');
+                btn.classList.add('bg-neutral-800', 'text-neutral-300');
+                if (btn.textContent.trim().includes(cat) || (cat === 'All' && btn.textContent.includes('All'))) {
+                    btn.classList.add('bg-orange-600', 'text-white');
+                    btn.classList.remove('bg-neutral-800', 'text-neutral-300');
+                }
+            });
+            renderFestivals();
+        }
+
+        // FOOD & CUISINE
+        let currentFoodFilter = 'All';
+        function renderFood() {
+            const grid = document.getElementById('foodGrid');
+            if (!grid) return;
+
+            let filtered = foodData;
+            if (currentFoodFilter !== 'All') {
+                filtered = foodData.filter(fd => fd.region.toLowerCase() === currentFoodFilter.toLowerCase());
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="bg-neutral-800/90 border border-neutral-700/80 rounded-2xl overflow-hidden shadow-xl hover:border-orange-500/50 transition-all flex flex-col justify-between">
+                    <div>
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-48 object-cover" loading="lazy">
+                        <div class="p-6">
+                            <span class="text-xs font-bold text-orange-400 uppercase tracking-widest block mb-1">${item.region} India Speciality</span>
+                            <h3 class="text-xl font-serif font-bold text-white mb-2">${item.name}</h3>
+                            <p class="text-neutral-300 text-xs sm:text-sm mb-3">${item.description}</p>
+                            <p class="text-neutral-400 text-xs italic"><strong class="text-neutral-200">Key Ingredients:</strong> ${item.ingredients}</p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="openFoodModal('${item.name}')" class="w-full bg-neutral-900 hover:bg-orange-600 text-white text-xs font-semibold py-2.5 rounded-xl border border-neutral-700 transition-colors">
+                            Discover Dish Heritage
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterFood(region) {
+            currentFoodFilter = region;
+            document.querySelectorAll('.food-btn').forEach(btn => {
+                btn.classList.remove('bg-orange-600', 'text-white');
+                btn.classList.add('bg-neutral-800', 'text-neutral-300');
+                if (btn.textContent.trim().includes(region) || (region === 'All' && btn.textContent.includes('Show All'))) {
+                    btn.classList.add('bg-orange-600', 'text-white');
+                    btn.classList.remove('bg-neutral-800', 'text-neutral-300');
+                }
+            });
+            renderFood();
+        }
+
+        // GALLERY
+        let currentGalleryFilter = 'All';
+        let activeGalleryList = galleryData;
+        let lightboxIndex = 0;
+
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            if (!grid) return;
+
+            activeGalleryList = galleryData;
+            if (currentGalleryFilter !== 'All') {
+                activeGalleryList = galleryData.filter(g => g.category === currentGalleryFilter);
+            }
+
+            grid.innerHTML = activeGalleryList.map((item, idx) => `
+                <div onclick="openLightbox(${idx})" class="group relative rounded-2xl overflow-hidden cursor-pointer h-60 shadow-lg border border-neutral-800">
+                    <img src="${item.src}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end">
+                        <span class="text-orange-400 text-[10px] uppercase font-bold tracking-wider">${item.category}</span>
+                        <h4 class="text-white font-serif font-bold text-sm">${item.title}</h4>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterGallery(cat) {
+            currentGalleryFilter = cat;
+            document.querySelectorAll('.gallery-btn').forEach(btn => {
+                btn.classList.remove('bg-orange-600', 'text-white');
+                btn.classList.add('bg-neutral-800', 'text-neutral-300');
+                if (btn.textContent.trim().includes(cat) || (cat === 'All' && btn.textContent.includes('All'))) {
+                    btn.classList.add('bg-orange-600', 'text-white');
+                    btn.classList.remove('bg-neutral-800', 'text-neutral-300');
+                }
+            });
+            renderGallery();
+        }
+
+        // LIGHTBOX CONTROLS
+        function openLightbox(idx) {
+            lightboxIndex = idx;
+            updateLightboxContent();
+            document.getElementById('lightboxModal').classList.remove('hidden');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightboxModal').classList.add('hidden');
+        }
+
+        function updateLightboxContent() {
+            const item = activeGalleryList[lightboxIndex];
+            if (!item) return;
+            document.getElementById('lightboxImage').src = item.src;
+            document.getElementById('lightboxCaption').textContent = `${item.title} (${item.category})`;
+        }
+
+        function prevLightboxImage() {
+            lightboxIndex = (lightboxIndex - 1 + activeGalleryList.length) % activeGalleryList.length;
+            updateLightboxContent();
+        }
+
+        function nextLightboxImage() {
+            lightboxIndex = (lightboxIndex + 1) % activeGalleryList.length;
+            updateLightboxContent();
+        }
+
+
+        /* ==========================================================================
+           4. MODALS INTERACTION & GENERATORS
+           ========================================================================== */
+
+        function openDestinationModal(id) {
+            const item = destinationsData.find(d => d.id === id);
+            if (!item) return;
+
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `
+                <img src="${item.image}" alt="${item.name}" class="w-full h-72 object-cover">
+                <div class="p-6 sm:p-8">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="bg-orange-500/20 text-orange-400 border border-orange-500/30 text-xs font-bold px-3 py-1 rounded-full uppercase">${item.category}</span>
+                        <span class="text-xs text-neutral-400"><i class="fa-regular fa-calendar-days text-orange-500"></i> Best: ${item.bestTime}</span>
+                    </div>
+                    <h3 class="text-3xl font-serif font-bold text-white mb-2">${item.name}</h3>
+                    <p class="text-orange-400 text-sm mb-4"><i class="fa-solid fa-location-dot"></i> ${item.location} (${item.region} India)</p>
+                    <p class="text-neutral-300 text-base leading-relaxed mb-6">${item.description}</p>
+                    
+                    <div class="bg-neutral-800 p-4 rounded-xl mb-6 border border-neutral-700">
+                        <h4 class="text-white font-bold text-sm mb-2">Key Highlights & Activities</h4>
+                        <ul class="text-xs text-neutral-300 space-y-1.5 list-disc list-inside">
+                            <li>Guided architectural photo tours & sunrise viewing spots</li>
+                            <li>Authentic regional bazaar craft & handicraft shopping</li>
+                            <li>Traditional cultural music performances & local dining</li>
+                        </ul>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <a href="#travel-guide" onclick="closeDetailModal()" class="orange-gradient text-white text-center font-bold px-6 py-3 rounded-xl flex-1 shadow">Plan Trip Here</a>
+                    </div>
+                </div>
+            `;
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function openMonumentModal(name) {
+            const item = monumentsData.find(m => m.name.toLowerCase().includes(name.toLowerCase())) || monumentsData[0];
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `
+                <img src="${item.image}" alt="${item.name}" class="w-full h-72 object-cover">
+                <div class="p-6 sm:p-8">
+                    <span class="bg-orange-500/20 text-orange-400 text-xs font-bold px-3 py-1 rounded-full uppercase">${item.category}</span>
+                    <h3 class="text-3xl font-serif font-bold text-white mt-2 mb-1">${item.name}</h3>
+                    <p class="text-neutral-400 text-xs mb-4"><i class="fa-solid fa-clock"></i> Established: ${item.period}</p>
+                    
+                    <div class="space-y-3 text-neutral-300 text-sm mb-6">
+                        <p><strong>Architectural Style:</strong> ${item.style}</p>
+                        <p><strong>Location:</strong> ${item.location}</p>
+                        <p class="leading-relaxed">${item.summary}</p>
+                    </div>
+
+                    <div class="bg-neutral-800 p-4 rounded-2xl border border-neutral-700 mb-6">
+                        <h4 class="text-white font-bold text-sm mb-1">Visitor Guidelines</h4>
+                        <p class="text-xs text-neutral-400">Entry passes are regulated by Archaeological Survey of India (ASI). Photography rules apply inside central sanctums.</p>
+                    </div>
+
+                    <button onclick="closeDetailModal()" class="w-full orange-gradient text-white font-bold py-3 rounded-xl">Close Overview</button>
+                </div>
+            `;
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function openFestivalModal(name) {
+            const item = festivalsData.find(f => f.name.toLowerCase().includes(name.toLowerCase())) || festivalsData[0];
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `
+                <img src="${item.image}" alt="${item.name}" class="w-full h-72 object-cover">
+                <div class="p-6 sm:p-8">
+                    <span class="bg-orange-500/20 text-orange-400 text-xs font-bold px-3 py-1 rounded-full uppercase">${item.category}</span>
+                    <h3 class="text-3xl font-serif font-bold text-white mt-2 mb-2">${item.name}</h3>
+                    <p class="text-orange-400 text-sm mb-4"><i class="fa-solid fa-map-pin"></i> ${item.region} • Season: ${item.season}</p>
+                    <p class="text-neutral-300 text-sm sm:text-base leading-relaxed mb-6">${item.description}</p>
+                    <button onclick="closeDetailModal()" class="w-full orange-gradient text-white font-bold py-3 rounded-xl">Close</button>
+                </div>
+            `;
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function openFoodModal(name) {
+            const item = foodData.find(f => f.name.toLowerCase().includes(name.toLowerCase())) || foodData[0];
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `
+                <img src="${item.image}" alt="${item.name}" class="w-full h-72 object-cover">
+                <div class="p-6 sm:p-8">
+                    <span class="bg-orange-500/20 text-orange-400 text-xs font-bold px-3 py-1 rounded-full uppercase">${item.region} Indian Culinary Speciality</span>
+                    <h3 class="text-3xl font-serif font-bold text-white mt-2 mb-2">${item.name}</h3>
+                    <p class="text-neutral-300 text-sm sm:text-base leading-relaxed mb-4">${item.description}</p>
+                    <div class="bg-neutral-800 p-4 rounded-xl border border-neutral-700 mb-6">
+                        <strong class="text-white text-xs block mb-1 uppercase">Key Recipe Ingredients:</strong>
+                        <p class="text-xs text-orange-300">${item.ingredients}</p>
+                    </div>
+                    <button onclick="closeDetailModal()" class="w-full orange-gradient text-white font-bold py-3 rounded-xl">Close</button>
+                </div>
+            `;
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+
+        /* ==========================================================================
+           5. ITINERARY PLANNER GENERATOR ENGINE
+           ========================================================================== */
+
+        function generateItinerary(e) {
+            e.preventDefault();
+            const destination = document.getElementById('planDestination').value;
+            const startLoc = document.getElementById('planStartLocation').value;
+            const style = document.getElementById('planStyle').value;
+            const startDate = document.getElementById('planStartDate').value || "Upcoming Season";
+            const days = parseInt(document.getElementById('planDays').value) || 5;
+            const budget = document.getElementById('planBudget').value;
+
+            const outputContainer = document.getElementById('itineraryResult');
+            outputContainer.classList.remove('hidden');
+
+            let dayCardsHTML = '';
+            for (let i = 1; i <= days; i++) {
+                dayCardsHTML += `
+                    <div class="bg-neutral-900 border border-neutral-700 p-4 rounded-2xl">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-orange-500 uppercase tracking-widest">Day ${i}</span>
+                            <span class="text-[11px] text-neutral-400"><i class="fa-regular fa-clock"></i> Full Schedule</span>
+                        </div>
+                        <h5 class="text-white font-serif font-bold text-base mb-1">
+                            ${i === 1 ? 'Arrival & Cultural Introduction' : i === days ? 'Farewell Highlights & Souvenir Trail' : 'Deep Exploration & Heritage Discovery'}
+                        </h5>
+                        <p class="text-xs text-neutral-300 leading-relaxed">
+                            ${i === 1 ? `Arrive from ${startLoc}. Check into hotel, explore local craft bazaars and enjoy welcome dinner.` :
+                              `Guided tour covering primary ${style} highlights, iconic monument photography, and authentic regional lunch.`}
+                        </p>
+                    </div>
+                `;
+            }
+
+            outputContainer.innerHTML = `
+                <div class="bg-orange-500/10 border border-orange-500/30 p-6 rounded-2xl mb-6">
+                    <div class="flex flex-wrap items-center justify-between gap-4 border-b border-orange-500/20 pb-4 mb-4">
+                        <div>
+                            <span class="text-xs uppercase font-bold text-orange-400">Custom Travel Plan Generated</span>
+                            <h4 class="text-2xl font-serif font-bold text-white">${destination}</h4>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-neutral-400 block">Style: ${style}</span>
+                            <span class="text-xs text-neutral-400 block">Budget: ${budget}</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${dayCardsHTML}
+                    </div>
+                    <p class="text-[11px] text-neutral-400 mt-4 italic text-center">* Generated itinerary schedule is informational to help organize your journey across India.</p>
+                </div>
+            `;
+            outputContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+
+        /* ==========================================================================
+           6. LIVE SEARCH ENGINE & HERO SEARCH
+           ========================================================================== */
+
+        function toggleSearchModal() {
+            const modal = document.getElementById('searchModal');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) {
+                document.getElementById('searchInput').focus();
+            }
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const resultsBox = document.getElementById('searchResults');
+
+            if (!query) {
+                resultsBox.innerHTML = `<p class="text-neutral-400 text-sm text-center py-6">Type to start exploring destinations across India...</p>`;
+                return;
+            }
+
+            // Search in Destinations, Monuments, Festivals, Food
+            const matchesDest = destinationsData.filter(d => d.name.toLowerCase().includes(query) || d.location.toLowerCase().includes(query) || d.category.toLowerCase().includes(query));
+            const matchesMon = monumentsData.filter(m => m.name.toLowerCase().includes(query) || m.style.toLowerCase().includes(query));
+            const matchesFest = festivalsData.filter(f => f.name.toLowerCase().includes(query) || f.region.toLowerCase().includes(query));
+            const matchesFood = foodData.filter(fd => fd.name.toLowerCase().includes(query) || fd.region.toLowerCase().includes(query));
+
+            let combined = [];
+            matchesDest.forEach(item => combined.push({ title: item.name, subtitle: item.location, type: 'Destination', id: item.id }));
+            matchesMon.forEach(item => combined.push({ title: item.name, subtitle: item.style, type: 'Monument', name: item.name }));
+            matchesFest.forEach(item => combined.push({ title: item.name, subtitle: item.region, type: 'Festival', name: item.name }));
+            matchesFood.forEach(item => combined.push({ title: item.name, subtitle: item.region, type: 'Cuisine', name: item.name }));
+
+            if (combined.length === 0) {
+                resultsBox.innerHTML = `
+                    <div class="text-center py-8 text-neutral-400">
+                        <i class="fa-solid fa-face-frown text-3xl mb-2 text-neutral-600"></i>
+                        <p>No matching destinations or items found for "${query}".</p>
+                    </div>
+                `;
+                return;
+            }
+
+            resultsBox.innerHTML = combined.map(res => `
+                <div onclick="selectSearchResult('${res.type}', '${res.id || res.name}')" class="p-3.5 bg-neutral-800 hover:bg-neutral-700 rounded-xl border border-neutral-700 cursor-pointer flex items-center justify-between transition-colors">
+                    <div>
+                        <h4 class="text-white font-bold text-sm">${res.title}</h4>
+                        <p class="text-xs text-neutral-400">${res.subtitle}</p>
+                    </div>
+                    <span class="text-[10px] bg-orange-500/20 text-orange-400 px-2.5 py-1 rounded-full uppercase font-bold border border-orange-500/30">${res.type}</span>
+                </div>
+            `).join('');
+        }
+
+        function selectSearchResult(type, identifier) {
+            toggleSearchModal();
+            if (type === 'Destination') openDestinationModal(identifier);
+            else if (type === 'Monument') openMonumentModal(identifier);
+            else if (type === 'Festival') openFestivalModal(identifier);
+            else if (type === 'Cuisine') openFoodModal(identifier);
+        }
+
+        function handleHeroSearch() {
+            const val = document.getElementById('heroSearchInput').value.trim();
+            if (val) {
+                toggleSearchModal();
+                document.getElementById('searchInput').value = val;
+                handleSearch();
+            }
+        }
+
+
+        /* ==========================================================================
+           7. TESTIMONIALS SLIDER ENGINE
+           ========================================================================== */
+
+        let currentTestimonialIdx = 0;
+        function updateTestimonialCard() {
+            const data = testimonialsData[currentTestimonialIdx];
+            document.getElementById('testimonialAvatar').querySelector('img').src = data.avatar;
+            document.getElementById('testimonialText').textContent = `"${data.text}"`;
+            document.getElementById('testimonialName').textContent = data.name;
+            document.getElementById('testimonialLocation').textContent = data.location;
+            document.getElementById('testimonialIndex').textContent = `${currentTestimonialIdx + 1} / ${testimonialsData.length}`;
+        }
+
+        function prevTestimonial() {
+            currentTestimonialIdx = (currentTestimonialIdx - 1 + testimonialsData.length) % testimonialsData.length;
+            updateTestimonialCard();
+        }
+
+        function nextTestimonial() {
+            currentTestimonialIdx = (currentTestimonialIdx + 1) % testimonialsData.length;
+            updateTestimonialCard();
+        }
+
+
+        /* ==========================================================================
+           8. FORM VALIDATIONS & CONTROLS
+           ========================================================================== */
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const status = document.getElementById('contactStatus');
+            status.classList.remove('hidden', 'bg-red-500/20', 'text-red-400', 'bg-green-500/20', 'text-green-400');
+            status.classList.add('bg-green-500/20', 'text-green-400');
+            status.textContent = "Thank you! Your inquiry has been submitted. Our tourism desk will reply shortly.";
+            document.getElementById('contactForm').reset();
+        }
+
+        function handleNewsletter(e) {
+            e.preventDefault();
+            const status = document.getElementById('newsletterStatus');
+            status.classList.remove('hidden');
+            status.textContent = "Thank you for subscribing to Explore India Portal!";
+            document.getElementById('newsletterEmail').value = '';
+        }
+
+        function toggleFaq(index) {
+            const ans = document.getElementById(`faqAns-${index}`);
+            const icon = document.getElementById(`faqIcon-${index}`);
+            if (ans.classList.contains('hidden')) {
+                ans.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                ans.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function toggleTheme() {
+            const body = document.getElementById('bodyEl');
+            const icon = document.getElementById('themeIcon');
+            
+            if (body.classList.contains('dark') || !body.classList.contains('light')) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                icon.className = "fa-solid fa-moon text-neutral-800";
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                icon.className = "fa-solid fa-sun text-amber-400";
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('backToTopBtn');
+            if (window.scrollY > 400) {
+                btn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                btn.classList.add('opacity-0', 'pointer-events-none');
+            }
+        });
+
+        // Keyboard Controls
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDetailModal();
+                closeLightbox();
+                const searchM = document.getElementById('searchModal');
+                if (!searchM.classList.contains('hidden')) searchM.classList.add('hidden');
+                const favM = document.getElementById('favoritesModal');
+                if (!favM.classList.contains('hidden')) favM.classList.add('hidden');
+            }
+            if (!document.getElementById('lightboxModal').classList.contains('hidden')) {
+                if (e.key === 'ArrowLeft') prevLightboxImage();
+                if (e.key === 'ArrowRight') nextLightboxImage();
+            }
+        });
+
+
+        /* ==========================================================================
+           9. INITIALIZATION ON WINDOW LOAD
+           ========================================================================== */
+
+        window.onload = function() {
+            renderDestinations();
+            renderHeritage();
+            renderFestivals();
+            renderFood();
+            renderGallery();
+            updateFavoritesBadge();
+            updateTestimonialCard();
+        };
+    </script>
+</body>
+</html>
